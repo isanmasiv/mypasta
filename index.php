@@ -29,9 +29,9 @@ as the name is changed.
   function generate_code($number) {
     $out = '';
     $codes = '123456789ABCDEFGHJKMNPQRSTUVWXYZ';
-    while ($number > 30) {
-      $key = $number % 31;
-      $number = floor($number / 31) - 1;
+    while ($number > 31) {
+      $key = $number % 32;
+      $number = floor($number / 32) - 1;
       $out = $codes{$key}.$out;
     }
     return $codes{((int) $number)}.$out;
@@ -78,7 +78,7 @@ as the name is changed.
     fwrite($file_handle,$pastatext);
     fclose($file_handle);
     echo '<p><b>Паста добавлена.</b></p>';
-    echo '<p><a href="'.$pastaserver.$_SERVER['REQUEST_URI'].'?view='.$curfile.'">Продолжить.</p>';
+    echo '<p><a href="'.$pastaserver.$_SERVER['REQUEST_URI'].'?'.$curfile.'">Продолжить.</p>';
   }
   if (isset($pastafoot) && $pastafoot!='')
     echo $pastafoot;
