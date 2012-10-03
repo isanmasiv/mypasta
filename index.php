@@ -14,12 +14,28 @@ as the name is changed.
 
 0. You just DO WHAT THE FUCK YOU WANT TO.
 ******************************************************************/
+/******************************************************************
+  My Pasta by 日本の笑顔 [^__^] aka anonkz
+  tnx to kurkuma, ojab
+  exUSSR, 2012
+******************************************************************/
   $pastaserver='http://localhost';
   $pastadir='pasta/';
   $pastaname='My Pasta Service';
-  $pastaver='0.1';
-  $pastahead='<a href="'.$pastaserver.$_SERVER['PHP_SELF'].'"><h1>'.$pastaname.'</h1></a>';
+  $pastaver='2';
+  $pastahead='<h1><a href="'.$pastaserver.$_SERVER['PHP_SELF'].'">'.$pastaname.'</a></h1>';
   $pastafoot='<a href="mailto:'.$_SERVER['SERVER_ADMIN'].'">Написать админу</a>';
+
+  function generate_code($number) {
+    $out = '';
+    $codes = '123456789ABCDEFGHJKMNPQRSTUVWXYZ';
+    while ($number > 30) {
+      $key = $number % 31;
+      $number = floor($number / 31) - 1;
+      $out = $codes{$key}.$out;
+    }
+    return $codes{((int) $number)}.$out;
+  }
 ?>
 <html>
 <head>
@@ -30,11 +46,10 @@ as the name is changed.
 </head>
 <body>
 <?php
-  $view=isset($_GET['view']) ? (string)$_GET['view'] : '';
+  $view=$_SERVER['QUERY_STRING'];
   $pastatext=isset($_POST['pastatext']) ? (string)$_POST['pastatext'] : '';
   if (isset($pastahead) && $pastahead!='')
     echo $pastahead;
-
   if ($view=='' && $pastatext=='') {
     echo '<p><b>Введите вашу пасту:</b></p>
 <form method="post">
@@ -42,7 +57,7 @@ as the name is changed.
   <p><input type="submit" value="Отправить"></p>
 </form>';
   } elseif ($view!='') {
-    if (file_exists($pastadir.$view)) {
+    if (file_exists($pastadir.$view) && preg_match('~^[0-9A-Z]+$~', $view)) {
       $file_handle = fopen($pastadir.$view, 'r');
       $filedata = '';
       $filecols = 0;
@@ -51,13 +66,14 @@ as the name is changed.
         $filecols++;
       }
       fclose($file_handle);
-      echo '<p><b>Ваша паста:</b></p><p><textarea rows="'.($filecols<20?20:$filecols).'" cols="50" readonly>'.$filedata.'</textarea></p>';
+      echo '<p><b>Ваша паста:</b></p><p><textarea rows="'.($filecols<20?20:$filecols).'" cols="50" readonly>'.htmlspecialchars($filedata).'</textarea></p>';
       echo '<p>Ссылка на пасту: <input name="nick" type="text" size="40" value="'.$pastaserver.$_SERVER['REQUEST_URI'].'" readonly><p>';
     } else {
       echo '<p><b>Ваша паста не найдена.</b></p>';
     }
   } elseif ($pastatext!='' && $view=='') {
-    $curfile=strtotime('now');
+    microtime(true);
+    $curfile=generate_code(count(scandir($pastadir))-1);
     $file_handle = fopen($pastadir.$curfile,'w');
     fwrite($file_handle,$pastatext);
     fclose($file_handle);
