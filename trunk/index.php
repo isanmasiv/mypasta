@@ -19,7 +19,7 @@ as the name is changed.
   $pastaname='My Pasta Service';
   $pastaver='0.1';
   $pastahead='<a href="'.$pastaserver.$_SERVER['PHP_SELF'].'"><h1>'.$pastaname.'</h1></a>';
-  $pastafoot='<a href="mailto:'.$_SERVER['SERVER_ADMIN'].'">Написать админу</a>';
+  $pastafoot='<a href="mailto:'.$_SERVER['SERVER_ADMIN'].'">РќР°РїРёСЃР°С‚СЊ Р°РґРјРёРЅСѓ</a>';
 ?>
 <html>
 <head>
@@ -36,10 +36,10 @@ as the name is changed.
     echo $pastahead;
 
   if ($view=='' && $pastatext=='') {
-    echo '<p><b>Введите вашу пасту:</b></p>
+    echo '<p><b>Р’РІРµРґРёС‚Рµ РІР°С€Сѓ РїР°СЃС‚Сѓ:</b></p>
 <form method="post">
   <p><textarea id="pastatext" rows="20" cols="50" name="pastatext"></textarea></p>
-  <p><input type="submit" value="Отправить"></p>
+  <p><input type="submit" value="РћС‚РїСЂР°РІРёС‚СЊ"></p>
 </form>';
   } elseif ($view!='') {
     if (file_exists($pastadir.$view)) {
@@ -51,18 +51,18 @@ as the name is changed.
         $filecols++;
       }
       fclose($file_handle);
-      echo '<p><b>Ваша паста:</b></p><p><textarea rows="'.($filecols<20?20:$filecols).'" cols="50" readonly>'.$filedata.'</textarea></p>';
-      echo '<p>Ссылка на пасту: <input name="nick" type="text" size="40" value="'.$pastaserver.$_SERVER['REQUEST_URI'].'" readonly><p>';
+      echo '<p><b>Р’Р°С€Р° РїР°СЃС‚Р°:</b></p><p><textarea rows="'.($filecols<20?20:$filecols).'" cols="50" readonly>'.$filedata.'</textarea></p>';
+      echo '<p>РЎСЃС‹Р»РєР° РЅР° РїР°СЃС‚Сѓ: <input name="nick" type="text" size="40" value="'.$pastaserver.$_SERVER['REQUEST_URI'].'" readonly><p>';
     } else {
-      echo '<p><b>Ваша паста не найдена.</b></p>';
+      echo '<p><b>Р’Р°С€Р° РїР°СЃС‚Р° РЅРµ РЅР°Р№РґРµРЅР°.</b></p>';
     }
   } elseif ($pastatext!='' && $view=='') {
     $curfile=strtotime('now');
     $file_handle = fopen($pastadir.$curfile,'w');
     fwrite($file_handle,$pastatext);
     fclose($file_handle);
-    echo '<p><b>Паста добавлена.</b></p>';
-    echo '<p><a href="'.$pastaserver.$_SERVER['REQUEST_URI'].'?view='.$curfile.'">Продолжить.</p>';
+    echo '<p><b>РџР°СЃС‚Р° РґРѕР±Р°РІР»РµРЅР°.</b></p>';
+    echo '<p><a href="'.$pastaserver.$_SERVER['REQUEST_URI'].'?view='.$curfile.'">РџСЂРѕРґРѕР»Р¶РёС‚СЊ.</p>';
   }
   if (isset($pastafoot) && $pastafoot!='')
     echo $pastafoot;
